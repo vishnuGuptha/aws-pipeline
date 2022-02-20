@@ -12,6 +12,7 @@ build:
     - npm run cdk -- synth
 
 artifacts:
+  base-directory: cdk.out
   files:
     - '**/*'
-  base-directory: 'cdk.out'
+  
