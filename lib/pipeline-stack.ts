@@ -3,7 +3,7 @@ import { Construct } from 'constructs';
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as codepipeline_actions from 'aws-cdk-lib/aws-codepipeline-actions';
 import * as codebuild from 'aws-cdk-lib/aws-codebuild';
-import { CodeBuildAction } from 'aws-cdk-lib/aws-codepipeline-actions';
+import { CloudFormationCreateUpdateStackAction, CodeBuildAction } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { BuildSpec, LinuxBuildImage, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
@@ -40,6 +40,18 @@ export class PipelineStack extends Stack {
     pipeline.addStage({
       stageName: 'Pipeline_Build',
       actions:[buildAction],
-    })
+    });
+
+    pipeline.addStage({
+      stageName: "Update_Pipeline",
+      actions: [
+        new CloudFormationCreateUpdateStackAction({
+          actionName: "Pipeline_Update",
+          stackName: "PipelineStack",
+          templatePath: cdkBuildOutput.atPath("cdk.out\PipelineStack.template.json"),
+          adminPermissions: true,
+        })
+      ]
+    });
   }
 }
