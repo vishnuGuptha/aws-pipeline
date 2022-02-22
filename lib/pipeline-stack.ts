@@ -2,7 +2,6 @@ import { SecretValue, Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as codepipeline from 'aws-cdk-lib/aws-codepipeline';
 import * as codepipeline_actions from 'aws-cdk-lib/aws-codepipeline-actions';
-import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import { CloudFormationCreateUpdateStackAction, CodeBuildAction } from 'aws-cdk-lib/aws-codepipeline-actions';
 import { BuildSpec, LinuxBuildImage, PipelineProject } from 'aws-cdk-lib/aws-codebuild';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
@@ -47,7 +46,7 @@ export class PipelineStack extends Stack {
       actionName: "Update_Pipeline",
       stackName: "PipelineStack",
       adminPermissions: true,
-      templatePath: cdkBuildOutput.atPath('PipelineStack.template.json'),
+      templatePath: cdkBuildOutput.atPath('../cdk.out/PipelineStack.template.json'),
     })
 
     pipeline.addStage({
