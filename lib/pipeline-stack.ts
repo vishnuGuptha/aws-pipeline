@@ -42,16 +42,17 @@ export class PipelineStack extends Stack {
       actions:[buildAction],
     });
 
+
+    const UpdateAction = new CloudFormationCreateUpdateStackAction({
+      actionName: "Pipeline_Update",
+      stackName: "PipelineStack",
+      adminPermissions: true,
+      templatePath: cdkBuildOutput.atPath('../cdk.out/PipelineStack.template.json'),
+    })
+
     pipeline.addStage({
       stageName: "Update_Pipeline",
-      actions: [
-        new CloudFormationCreateUpdateStackAction({
-          actionName: "Pipeline_Update",
-          stackName: "PipelineStack",
-          adminPermissions: true,
-          templatePath: cdkBuildOutput.atPath('PipelineStack.template.json'),
-        })
-      ]
+      actions: [UpdateAction],
     });
   }
 }
