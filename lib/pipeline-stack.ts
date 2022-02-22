@@ -11,7 +11,7 @@ export class PipelineStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
     const pipeline = new codepipeline.Pipeline(this, 'MyPipeline');
-    const sourceOutput = new codepipeline.Artifact();
+    const sourceOutput = new codepipeline.Artifact('SourceOutput');
     const sourceAction = new codepipeline_actions.GitHubSourceAction({
       actionName: 'Pipeline_Source',
       owner: 'vishnuGuptha',
@@ -25,12 +25,12 @@ export class PipelineStack extends Stack {
       actions: [sourceAction],
     });
 
-    const cdkBuildOutput = new codepipeline.Artifact('cdkBuildOutput');
+    const cdkBuildOutput = new codepipeline.Artifact('CdkBuildOutput');
     const buildAction = new CodeBuildAction({
       actionName: "CDL_BUILD",
       input: sourceOutput,
       outputs: [cdkBuildOutput],
-      project: new PipelineProject(this, 'cdkBuildProject', {
+      project: new PipelineProject(this, 'CdkBuildProject', {
         environment: {
           buildImage: LinuxBuildImage.STANDARD_5_0
         },
@@ -47,7 +47,7 @@ export class PipelineStack extends Stack {
       actionName: "Pipeline_Update",
       stackName: "PipelineStack",
       adminPermissions: true,
-      templatePath: cdkBuildOutput.atPath('../cdk.out/PipelineStack.template.json'),
+      templatePath: cdkBuildOutput.atPath('pipeline/cdk.out/PipelineStack.template.json'),
     })
 
     pipeline.addStage({
