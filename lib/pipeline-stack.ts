@@ -44,10 +44,10 @@ export class PipelineStack extends Stack {
 
 
     const UpdateAction = new CloudFormationCreateUpdateStackAction({
-      actionName: "Pipeline_Update",
+      actionName: "Update_Pipeline",
       stackName: "PipelineStack",
       adminPermissions: true,
-      templatePath: cdkBuildOutput.atPath('pipeline/cdk.out/PipelineStack.template.json'),
+      templatePath: cdkBuildOutput.atPath('PipelineStack.template.json'),
     })
 
     pipeline.addStage({
