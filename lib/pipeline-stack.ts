@@ -46,7 +46,7 @@ export class PipelineStack extends Stack {
       actionName: "Update_Pipeline",
       stackName: "PipelineStack",
       adminPermissions: true,
-      templatePath: cdkBuildOutput.atPath("PipelineStack.template.json"),
+      templatePath: sourceOutput.atPath('PipelineStack.template.json'),
     })
 
     pipeline.addStage({
